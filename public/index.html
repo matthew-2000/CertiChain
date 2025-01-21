@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>CertiChain</title>
+  <link rel="stylesheet" href="./stylesheets/style.css">
+</head>
+<body>
+<header>
+  <h1>CertiChain - Certificazione Digitale</h1>
+</header>
+
+<main>
+  <section class="form-section">
+    <h2>Emetti un Certificato</h2>
+    <input type="text" id="name" placeholder="Nome del beneficiario">
+    <input type="text" id="course" placeholder="Nome del corso">
+    <button onclick="issueCertificate()">Emetti Certificato</button>
+    <p id="result"></p>
+  </section>
+
+  <section class="form-section">
+    <h2>Verifica un Certificato</h2>
+    <input type="text" id="cert-id" placeholder="ID del certificato">
+    <button onclick="verifyCertificate()">Verifica</button>
+    <p id="verify-result"></p>
+  </section>
+</main>
+
+<script src="app.js"></script>
+</body>
+</html>
