@@ -7,16 +7,8 @@
 </head>
 <body>
 <h1>My Smart Contract UI</h1>
-<button id="connectBtn" onclick="connectMetaMask()">Connect to MetaMask</button>
-<br><br>
-<div>
-  <button onclick="getMessage()">Get Message</button>
-  <p id="message">Message will appear here</p>
-</div>
-<div>
-  <input type="text" id="messageInput" placeholder="New message">
-  <button onclick="setMessage()">Set Message</button>
-</div>
+<button id="connectBtn">Login con MetaMask</button>
+<p id="userAddress"></p>
 <script src="https://cdn.jsdelivr.net/npm/ethers/dist/ethers.umd.min.js"></script>
 <script src="./javascripts/app.js"></script>
 </body>
