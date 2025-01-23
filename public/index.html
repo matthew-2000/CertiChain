@@ -7,8 +7,30 @@
 </head>
 <body>
 <h1>My Smart Contract UI</h1>
+
 <button id="connectBtn">Login con MetaMask</button>
 <p id="userAddress"></p>
+
+<h2>Emetti Certificato</h2>
+<input type="text" id="beneficiary" placeholder="Indirizzo Beneficiario">
+<input type="text" id="ipfsURI" placeholder="IPFS URI">
+<button id="issueCertificateBtn">Emetti Certificato</button>
+<p id="issueResult"></p>
+
+<h2>Controlla Certificato</h2>
+<input type="text" id="certificateId" placeholder="Token ID">
+<button id="checkCertificateBtn">Verifica Certificato</button>
+<p id="certificateDetails"></p>
+
+<h2>Revoca Certificato</h2>
+<input type="text" id="revokeId" placeholder="Token ID">
+<input type="text" id="revokeReason" placeholder="Motivo Revoca">
+<button id="revokeCertificateBtn">Revoca Certificato</button>
+<p id="revokeResult"></p>
+
+<button id="getNFTsBtn">Visualizza i miei NFT</button>
+<p id="myNft"></p>
+
 <script src="https://cdn.jsdelivr.net/npm/ethers/dist/ethers.umd.min.js"></script>
 <script src="./javascripts/app.js"></script>
 </body>
