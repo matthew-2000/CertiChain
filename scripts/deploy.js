@@ -1,4 +1,7 @@
 const hre = require("hardhat");
+const fs = require('fs');
+const contractJson = require("../artifacts/contracts/CertificateManager.sol/CertificateManager.json");
+const path = require("path");
 
 async function main() {
     // Otteniamo i signers (deployer)
@@ -12,17 +15,17 @@ async function main() {
     // Deployiamo il contratto passando il proprietario iniziale (deployer.address)
     const certificateManager = await CertificateManager.deploy(deployer.address);
 
-    // Attendiamo il completamento del deploy
-    await certificateManager.waitForDeployment();
+    const config = {
+        contractAddress: await certificateManager.getAddress(),
+        contractABI: contractJson.abi
+    };
 
-    // Recuperiamo l'indirizzo del contratto deployato
-    const contractAddress = await certificateManager.getAddress();
-    console.log("CertificateManager deployed to:", contractAddress);
+    const configPath = path.resolve(__dirname, '../public/javascripts/config.json');
+    fs.writeFileSync(configPath, JSON.stringify(config, null, 2), 'utf-8');
+    console.log("Configurazione salvata in public/javascripts/config.json");
 }
 
-main()
-    .then(() => process.exit(0))
-    .catch((error) => {
-        console.error(error);
-        process.exit(1);
-    });
+main().catch((error) => {
+    console.error(error);
+    process.exitCode = 1;
+});
