@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <title>CertiChain - Verifier</title>
+    <link rel="stylesheet" href="./styles/styles.css"/>
+</head>
+<body>
+<header class="header">
+    <img src="./images/logo.png" alt="CertiChain Logo" class="logo" />
+    <nav class="nav">
+        <a href="./index.html" class="nav-link">Home</a>
+        <a href="./admin.html" class="nav-link">Admin</a>
+        <a href="./user.html" class="nav-link">User</a>
+        <a href="./verifier.html" class="nav-link">Verifier</a>
+    </nav>
+</header>
+
+<main class="content">
+    <h1>Area Verificatore</h1>
+    <p>
+        Inserisci il Token ID del certificato che vuoi verificare.
+    </p>
+
+    <section class="card">
+        <label for="certificateId">Token ID</label>
+        <input type="text" id="certificateId" placeholder="1, 2, 3..."/>
+
+        <button id="checkCertificateBtn" class="btn btn-primary">Verifica Certificato</button>
+        <p id="certificateDetails"></p>
+    </section>
+</main>
+
+<footer class="footer">
+    <p>&copy; 2025 CertiChain. All rights reserved.</p>
+</footer>
+
+<!-- ethers.js e script -->
+<script src="https://cdn.jsdelivr.net/npm/ethers/dist/ethers.umd.min.js"></script>
+<script src="./javascripts/app.js"></script>
+<script src="./javascripts/verifier.js"></script> <!-- Script specifico per Verifier -->
+</body>
+</html>

@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>CertiChain - Admin</title>
+  <link rel="stylesheet" href="./styles/styles.css"/>
+</head>
+<body>
+<header class="header">
+  <img src="./images/logo.png" alt="CertiChain Logo" class="logo" />
+  <nav class="nav">
+    <a href="./index.html" class="nav-link">Home</a>
+    <a href="./admin.html" class="nav-link">Admin</a>
+    <a href="./user.html" class="nav-link">User</a>
+    <a href="./verifier.html" class="nav-link">Verifier</a>
+  </nav>
+</header>
+
+<main class="content">
+  <h1>Area Admin</h1>
+  <button id="connectBtn" class="btn btn-connect">Login con MetaMask</button>
+  <p id="userAddress"></p>
+
+  <section class="card">
+    <h2>Emetti Certificato</h2>
+    <label for="beneficiary">Beneficiary Address</label>
+    <input type="text" id="beneficiary" placeholder="0x..."/>
+
+    <label for="studentName">Nome Studente</label>
+    <input type="text" id="studentName" placeholder="Mario Rossi"/>
+
+    <label for="courseName">Nome Corso</label>
+    <input type="text" id="courseName" placeholder="Blockchain 101"/>
+
+    <label for="completionDate">Data di Completamento</label>
+    <input type="text" id="completionDate" placeholder="2025-01-01"/>
+
+    <label for="ipfsURI">IPFS URI</label>
+    <input type="text" id="ipfsURI" placeholder="ipfs://Qm..."/>
+
+    <button id="issueCertificateBtn" class="btn btn-primary">Emetti Certificato</button>
+    <p id="issueResult"></p>
+  </section>
+
+  <section class="card">
+    <h2>Revoca Certificato</h2>
+    <label for="revokeId">Token ID</label>
+    <input type="text" id="revokeId" placeholder="1, 2, 3..."/>
+
+    <label for="revokeReason">Motivo</label>
+    <input type="text" id="revokeReason" placeholder="Errore dati"/>
+
+    <button id="revokeCertificateBtn" class="btn btn-warning">Revoca Certificato</button>
+    <p id="revokeResult"></p>
+  </section>
+</main>
+
+<footer class="footer">
+  <p>&copy; 2025 CertiChain. All rights reserved.</p>
+</footer>
+
+<!-- ethers.js e script -->
+<script src="https://cdn.jsdelivr.net/npm/ethers/dist/ethers.umd.min.js"></script>
+<script src="./javascripts/app.js"></script>
+<script src="./javascripts/admin.js"></script> <!-- Script specifico per Admin -->
+</body>
+</html>

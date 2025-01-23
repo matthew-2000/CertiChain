@@ -1,41 +1,34 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Blockchain dApp</title>
-  <link rel="stylesheet" href="./styles.css">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>CertiChain - Home</title>
+  <link rel="stylesheet" href="./styles/styles.css" />
 </head>
 <body>
-<h1>My Smart Contract UI</h1>
+<header class="header">
+  <img src="./images/logo.png" alt="CertiChain Logo" class="logo" />
+  <nav class="nav">
+    <a href="./index.html" class="nav-link">Home</a>
+    <a href="./admin.html" class="nav-link">Admin</a>
+    <a href="./user.html" class="nav-link">User</a>
+    <a href="./verifier.html" class="nav-link">Verifier</a>
+  </nav>
+</header>
 
-<button id="connectBtn">Login con MetaMask</button>
-<p id="userAddress"></p>
+<main class="content">
+  <h1>Benvenuto in CertiChain</h1>
+  <p>
+    Questa piattaforma ti consente di emettere, verificare, revocare e condividere certificati digitali basati su blockchain.
+  </p>
+  <p>
+    Scegli dal menu in alto il ruolo desiderato: <strong>Admin</strong> (Ente Certificatore), <strong>User</strong> (Studente/Beneficiario) o <strong>Verifier</strong> (Azienda/Verificatore).
+  </p>
+</main>
 
-<h2>Emetti Certificato</h2>
-<input type="text" id="beneficiary" placeholder="Indirizzo Beneficiario">
-<input type="text" id="ipfsURI" placeholder="IPFS URI">
-<button id="issueCertificateBtn">Emetti Certificato</button>
-<p id="issueResult"></p>
-
-<h2>Controlla Certificato</h2>
-<input type="text" id="certificateId" placeholder="Token ID">
-<button id="checkCertificateBtn">Verifica Certificato</button>
-<p id="certificateDetails"></p>
-
-<h2>Revoca Certificato</h2>
-<input type="text" id="revokeId" placeholder="Token ID">
-<input type="text" id="revokeReason" placeholder="Motivo Revoca">
-<button id="revokeCertificateBtn">Revoca Certificato</button>
-<p id="revokeResult"></p>
-
-<h2>I miei Certificati NFT</h2>
-<button id="getNFTsBtn">Visualizza i miei NFT</button>
-<p id="myNft"></p>
-
-<script src="https://cdn.jsdelivr.net/npm/ethers/dist/ethers.umd.min.js"></script>
-<script src="./javascripts/blockchain.js"></script>
-<script src="./javascripts/ui.js"></script>
-<script src="./javascripts/app.js"></script>
+<footer class="footer">
+  <p>&copy; 2025 CertiChain. All rights reserved.</p>
+</footer>
 </body>
 </html>

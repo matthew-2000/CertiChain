@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>CertiChain - User</title>
+  <link rel="stylesheet" href="./styles/styles.css"/>
+</head>
+<body>
+<header class="header">
+  <img src="./images/logo.png" alt="CertiChain Logo" class="logo" />
+  <nav class="nav">
+    <a href="./index.html" class="nav-link">Home</a>
+    <a href="./admin.html" class="nav-link">Admin</a>
+    <a href="./user.html" class="nav-link">User</a>
+    <a href="./verifier.html" class="nav-link">Verifier</a>
+  </nav>
+</header>
+
+<main class="content">
+  <h1>Area Utente</h1>
+  <button id="connectBtn" class="btn btn-connect">Login con MetaMask</button>
+  <p id="userAddress"></p>
+
+  <section class="card">
+    <h2>I miei Certificati</h2>
+    <button id="getNFTsBtn" class="btn btn-secondary">Mostra i miei NFT</button>
+    <pre id="myNft"></pre>
+  </section>
+
+  <section class="card">
+    <h2>Condivisione Certificato</h2>
+    <label for="shareCertificateId">Token ID</label>
+    <input type="text" id="shareCertificateId" placeholder="1, 2, 3..."/>
+
+    <button id="shareCertificateBtn" class="btn btn-primary">Genera Link</button>
+    <p id="certificateLink"></p>
+  </section>
+</main>
+
+<footer class="footer">
+  <p>&copy; 2025 CertiChain. All rights reserved.</p>
+</footer>
+
+<!-- ethers.js e script -->
+<script src="https://cdn.jsdelivr.net/npm/ethers/dist/ethers.umd.min.js"></script>
+<script src="./javascripts/app.js"></script>
+<script src="./javascripts/user.js"></script> <!-- Script specifico per User -->
+</body>
+</html>
