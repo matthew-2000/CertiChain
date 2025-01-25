@@ -46,7 +46,10 @@ contract CertificateRegistry {
         currentTokenId++;
         uint256 newTokenId = currentTokenId;
 
-        // Mint the NFT using the CertificateNFT contract
+        // Qui chiamiamo "mintCertificate" su certificateNFT
+        // ma la "onlyOwner" del NFT aspetta che msg.sender sia l'owner di CertificateNFT
+        // Quindi chiunque stia chiamando issueCertificate deve essere lo stesso address
+        // che Ownable di "CertificateNFT" riconosce come owner (=> CertificateRegistry).
         certificateNFT.mintCertificate(beneficiary, newTokenId, ipfsURI);
 
         certificates[newTokenId] = CertificateInfo({
@@ -64,7 +67,7 @@ contract CertificateRegistry {
     }
 
     function revokeCertificate(uint256 tokenId, string memory reason) public onlyAuthorizedIssuer {
-        require(certificateNFT.ownerOf(tokenId) != address(0), "Certificate does not exist");
+        // Controlla che il token esista prima di revocare
         require(!certificates[tokenId].revoked, "Already revoked");
 
         certificates[tokenId].revoked = true;
@@ -87,19 +90,20 @@ contract CertificateRegistry {
         string memory ipfs
     )
     {
-        if (certificateNFT.ownerOf(tokenId) == address(0)) {
+        try certificateNFT.ownerOf(tokenId) returns (address nftOwner) {
+            CertificateInfo memory info = certificates[tokenId];
+            return (
+                !info.revoked,
+                info.revoked,
+                info.issuer,
+                info.institutionName,
+                info.certificateTitle,
+                info.beneficiaryName,
+                info.dateIssued,
+                info.ipfsURI
+            );
+        } catch {
             return (false, false, address(0), "", "", "", "", "");
         }
-        CertificateInfo memory info = certificates[tokenId];
-        return (
-            !info.revoked,
-            info.revoked,
-            info.issuer,
-            info.institutionName,
-            info.certificateTitle,
-            info.beneficiaryName,
-            info.dateIssued,
-            info.ipfsURI
-        );
     }
 }

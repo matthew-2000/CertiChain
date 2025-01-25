@@ -7,7 +7,9 @@ import "@openzeppelin/contracts/access/Ownable.sol";
 contract CertificateNFT is ERC721URIStorage, Ownable {
     string public baseURI;
 
-    constructor(address initialOwner) ERC721("BlockchainCertificate", "BCERT") Ownable(initialOwner) {}
+    constructor(address initialOwner) ERC721("BlockchainCertificate", "BCERT") Ownable(initialOwner) {
+        // L'owner iniziale è "initialOwner"
+    }
 
     function setBaseURI(string memory newBaseURI) external onlyOwner {
         baseURI = newBaseURI;
