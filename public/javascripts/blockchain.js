@@ -9,7 +9,7 @@ async function loadContractConfig() {
         const response = await fetch("./javascripts/config.json");
         const config = await response.json();
 
-        // Salviamo gli indirizzi dei contratti e ABI
+        // Inizializziamo provider e signer
         const provider = new ethers.BrowserProvider(window.ethereum);
         signer = await provider.getSigner();
 
@@ -81,20 +81,41 @@ async function issueCertificate(
 
 /**
  * Verifica un certificato ottenendo le informazioni dal contratto Registry.
+ * La funzione verifyCertificate(...) NON restituisce la revokeReason,
+ * quindi facciamo una chiamata extra a "certificates(tokenId)" per ottenerla.
  */
 async function checkCertificate(tokenId) {
     try {
-        const cert = await registryContract.verifyCertificate(tokenId);
+        await loadContractConfig();
+        // Chiamata alla funzione "verifyCertificate(tokenId)"
+        // Restituisce [valid, revoked, issuer, institutionName, title, beneficiaryName, dateIssued, ipfsURI]
+        const certArray = await registryContract.verifyCertificate(tokenId);
+
+        // Chiamata diretta alla mapping "certificates(tokenId)" per avere revokeReason
+        const certInfo = await registryContract.certificates(tokenId);
+
+        // L'oggetto certInfo, essendo una struct, sarà un array con i campi:
+        // 0: institutionName
+        // 1: certificateTitle
+        // 2: beneficiaryName
+        // 3: dateIssued
+        // 4: ipfsURI
+        // 5: revoked
+        // 6: revokeReason
+        // 7: issuer
+        // Se stai usando Hardhat/Ethers 6, potresti accedere a .institutionName, .revokeReason, ecc.
+        // ma per coerenza, prendiamo .revokeReason
 
         return {
-            valid: cert[0],
-            revoked: cert[1],
-            issuer: cert[2],
-            institutionName: cert[3],
-            certificateTitle: cert[4],
-            beneficiaryName: cert[5],
-            dateIssued: cert[6],
-            ipfsURI: cert[7]
+            valid: certArray[0],
+            revoked: certArray[1],
+            issuer: certArray[2],
+            institutionName: certArray[3],
+            certificateTitle: certArray[4],
+            beneficiaryName: certArray[5],
+            dateIssued: certArray[6],
+            ipfsURI: certArray[7],
+            revokeReason: certInfo.revokeReason // questo campo in più
         };
     } catch (error) {
         throw new Error("Errore nella verifica del certificato: " + error.message);
@@ -120,13 +141,11 @@ async function revokeCertificate(tokenId, reason) {
 async function getUserNFTs() {
     const userAddress = localStorage.getItem("userAddress");
     try {
-        const balance = await nftContract.balanceOf(userAddress);
+        const tokenIds = await registryContract.getUserCertificates(userAddress);
         let nftDetails = [];
 
-        for (let i = 0; i < balance; i++) {
-            const tokenId = await nftContract.tokenOfOwnerByIndex(userAddress, i);
+        for (let tokenId of tokenIds) {
             const certificate = await checkCertificate(tokenId);
-
             nftDetails.push({
                 tokenId: tokenId.toString(),
                 institutionName: certificate.institutionName,
@@ -134,7 +153,7 @@ async function getUserNFTs() {
                 beneficiaryName: certificate.beneficiaryName,
                 dateIssued: certificate.dateIssued,
                 ipfsURI: certificate.ipfsURI,
-                revoked: certificate.revoked ? "Yes" : "No",
+                revoked: certificate.revoked,
                 issuer: certificate.issuer
             });
         }

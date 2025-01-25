@@ -10,6 +10,8 @@ async function main() {
     const AccessControlManager = await hre.ethers.getContractFactory("AccessControlManager");
     const accessControl = await AccessControlManager.deploy();
     await accessControl.waitForDeployment();
+    await accessControl.addIssuer(deployer.address);
+    console.log("Issuer aggiunto:", deployer.address);
     console.log("AccessControlManager deployed at:", await accessControl.getAddress());
 
     // Deploy CertificateNFT

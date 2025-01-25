@@ -1,6 +1,6 @@
 function displayResult(elementId, message, isError = false) {
     const element = document.getElementById(elementId);
-    element.innerText = message;
+    element.innerHTML = message; // useremo innerHTML perché mostriamo potenzialmente tag <br>
     element.style.color = isError ? "red" : "green";
 }
 
@@ -22,7 +22,6 @@ async function handleIssueCertificate() {
     const ipfsURI = document.getElementById('ipfsURI').value;
 
     try {
-        // Adegua i parametri in base alla tua funzione Solidity
         const txHash = await issueCertificate(
             beneficiary,
             institutionName,
@@ -41,18 +40,19 @@ async function handleCheckCertificate() {
     const tokenId = document.getElementById('certificateId').value;
 
     try {
-        // Se stai usando "checkCertificate(tokenId)" che restituisce un oggetto
+        // Otteniamo TUTTE le info, compreso revokeReason
         const certificate = await checkCertificate(tokenId);
-        // Mostra alcuni campi di esempio
+
         const details = `
-            Istituzione: ${certificate.institutionName}
-            Titolo: ${certificate.certificateTitle}
-            Beneficiario: ${certificate.beneficiaryName}
-            Emesso il: ${certificate.dateIssued}
-            IPFS: ${certificate.ipfsURI}
-            Revocato: ${certificate.revoked}
-            Motivo revoca: ${certificate.revokeReason}
-            Issuer: ${certificate.issuer}
+            <strong>Istituzione:</strong> ${certificate.institutionName}<br>
+            <strong>Titolo:</strong> ${certificate.certificateTitle}<br>
+            <strong>Beneficiario:</strong> ${certificate.beneficiaryName}<br>
+            <strong>Emesso il:</strong> ${certificate.dateIssued}<br>
+            <strong>IPFS:</strong> <a href="${certificate.ipfsURI}" target="_blank">${certificate.ipfsURI}</a><br>
+            <strong>Revocato:</strong> ${certificate.revoked ? 'Sì' : 'No'}<br>
+            <strong>Motivo revoca:</strong> ${certificate.revokeReason || 'N/A'}<br>
+            <strong>Issuer:</strong> ${certificate.issuer}<br>
+            <strong>Valido:</strong> ${certificate.valid ? 'Sì' : 'No'}<br>
         `;
         displayResult('certificateDetails', details);
     } catch (error) {
@@ -78,7 +78,6 @@ async function handleGetNFTs() {
 
         if (Array.isArray(nftDetails) && nftDetails.length > 0) {
             let output = '<ul>';
-
             nftDetails.forEach((nft) => {
                 output += `
                 <li>
@@ -93,7 +92,6 @@ async function handleGetNFTs() {
                     <strong>Issuer:</strong> ${nft.issuer}
                 </li><br>`;
             });
-
             output += '</ul>';
             displayResult('myNft', output);
         } else {

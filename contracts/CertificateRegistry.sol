@@ -17,6 +17,7 @@ contract CertificateRegistry {
     }
 
     mapping(uint256 => CertificateInfo) public certificates;
+    mapping(address => uint256[]) private userCertificates;
     uint256 public currentTokenId;
 
     CertificateNFT public certificateNFT;
@@ -46,12 +47,7 @@ contract CertificateRegistry {
         currentTokenId++;
         uint256 newTokenId = currentTokenId;
 
-        // Qui chiamiamo "mintCertificate" su certificateNFT
-        // ma la "onlyOwner" del NFT aspetta che msg.sender sia l'owner di CertificateNFT
-        // Quindi chiunque stia chiamando issueCertificate deve essere lo stesso address
-        // che Ownable di "CertificateNFT" riconosce come owner (=> CertificateRegistry).
         certificateNFT.mintCertificate(beneficiary, newTokenId, ipfsURI);
-
         certificates[newTokenId] = CertificateInfo({
             institutionName: institutionName,
             certificateTitle: certificateTitle,
@@ -63,7 +59,14 @@ contract CertificateRegistry {
             issuer: msg.sender
         });
 
+        // Aggiungi token ID al mapping dell'utente
+        userCertificates[beneficiary].push(newTokenId);
+
         emit CertificateIssued(newTokenId, msg.sender, beneficiary);
+    }
+
+    function getUserCertificates(address user) public view returns (uint256[] memory) {
+        return userCertificates[user];
     }
 
     function revokeCertificate(uint256 tokenId, string memory reason) public onlyAuthorizedIssuer {
