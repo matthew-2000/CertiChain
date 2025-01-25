@@ -4,64 +4,94 @@
   <meta charset="UTF-8"/>
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>CertiChain - Admin</title>
+
+  <!-- Bootstrap CSS -->
+  <link
+          rel="stylesheet"
+          href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css"
+  />
+
+  <!-- Custom CSS -->
   <link rel="stylesheet" href="./styles/styles.css"/>
 </head>
 <body>
-<header class="header">
-  <img src="./images/logo.png" alt="CertiChain Logo" class="logo" />
-  <nav class="nav">
-    <a href="./index.html" class="nav-link">Home</a>
-    <a href="./admin.html" class="nav-link">Admin</a>
-    <a href="./user.html" class="nav-link">User</a>
-    <a href="./verifier.html" class="nav-link">Verifier</a>
-  </nav>
-</header>
+
+<!-- HEADER / NAVBAR -->
+<nav class="navbar navbar-expand-lg">
+  <div class="container-fluid">
+    <a class="navbar-brand" href="./index.html">
+      <img src="./images/logo.png" alt="CertiChain Logo" />
+    </a>
+    <button
+            class="navbar-toggler text-white"
+            type="button"
+            data-bs-toggle="collapse"
+            data-bs-target="#navbarNav"
+            aria-controls="navbarNav"
+            aria-expanded="false"
+            aria-label="Toggle navigation"
+    >
+      <span class="navbar-toggler-icon text-white"></span>
+    </button>
+
+    <div class="collapse navbar-collapse" id="navbarNav">
+      <ul class="navbar-nav ms-auto">
+        <li class="nav-item"><a href="./index.html" class="nav-link">Home</a></li>
+        <li class="nav-item"><a href="./admin.html" class="nav-link active">Admin</a></li>
+        <li class="nav-item"><a href="./user.html" class="nav-link">User</a></li>
+        <li class="nav-item"><a href="./verifier.html" class="nav-link">Verifier</a></li>
+      </ul>
+    </div>
+  </div>
+</nav>
 
 <main class="content">
   <h1>Area Admin</h1>
   <button id="connectBtn" class="btn btn-connect">Login con MetaMask</button>
   <p id="userAddress"></p>
 
-  <section class="card">
+  <section class="card p-3">
     <h2>Emetti Certificato</h2>
+
     <!-- Beneficiary Address -->
     <label for="beneficiary">Beneficiary Address</label>
-    <input type="text" id="beneficiary" placeholder="0x..."/>
+    <input type="text" id="beneficiary" class="form-control" placeholder="0x..."/>
 
     <!-- Nome Istituzione -->
     <label for="institutionName">Nome Istituzione</label>
-    <input type="text" id="institutionName" placeholder="Università XYZ"/>
+    <input type="text" id="institutionName" class="form-control" placeholder="Università XYZ"/>
 
     <!-- Nome Studente -->
     <label for="beneficiaryName">Nome Studente</label>
-    <input type="text" id="beneficiaryName" placeholder="Mario Rossi"/>
+    <input type="text" id="beneficiaryName" class="form-control" placeholder="Mario Rossi"/>
 
     <!-- Nome Corso (Certificate Title) -->
     <label for="certificateTitle">Nome Corso</label>
-    <input type="text" id="certificateTitle" placeholder="Blockchain 101"/>
+    <input type="text" id="certificateTitle" class="form-control" placeholder="Blockchain 101"/>
 
     <!-- Data di Completamento (Date Issued) -->
     <label for="dateIssued">Data di Completamento</label>
-    <input type="text" id="dateIssued" placeholder="2025-01-01"/>
+    <input type="date" id="dateIssued" class="form-control"/>
 
     <!-- IPFS URI -->
     <label for="ipfsURI">IPFS URI</label>
-    <input type="text" id="ipfsURI" placeholder="ipfs://Qm..."/>
+    <input type="text" id="ipfsURI" class="form-control" placeholder="ipfs://Qm..."/>
 
-    <button id="issueCertificateBtn" class="btn btn-primary">Emetti Certificato</button>
-    <p id="issueResult"></p>
+    <button id="issueCertificateBtn" class="btn btn-primary mt-3">Emetti Certificato</button>
+    <p id="issueResult" class="mt-2"></p>
   </section>
 
-  <section class="card">
+  <section class="card p-3">
     <h2>Revoca Certificato</h2>
+
     <label for="revokeId">Token ID</label>
-    <input type="text" id="revokeId" placeholder="1, 2, 3..."/>
+    <input type="text" id="revokeId" class="form-control" placeholder="1, 2, 3..."/>
 
     <label for="revokeReason">Motivo</label>
-    <input type="text" id="revokeReason" placeholder="Errore dati"/>
+    <input type="text" id="revokeReason" class="form-control" placeholder="Errore dati"/>
 
-    <button id="revokeCertificateBtn" class="btn btn-warning">Revoca Certificato</button>
-    <p id="revokeResult"></p>
+    <button id="revokeCertificateBtn" class="btn btn-warning mt-3">Revoca Certificato</button>
+    <p id="revokeResult" class="mt-2"></p>
   </section>
 </main>
 
@@ -69,7 +99,11 @@
   <p>&copy; 2025 CertiChain. All rights reserved.</p>
 </footer>
 
-<!-- ethers.js e script -->
+<!-- Bootstrap & Scripts -->
+<!-- Bootstrap senza attributi di sicurezza (solo per test) -->
+<script
+        src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js">
+</script>
 <script src="https://cdn.jsdelivr.net/npm/ethers/dist/ethers.umd.min.js"></script>
 <script src="./javascripts/ui.js"></script>
 <script src="./javascripts/blockchain.js"></script>

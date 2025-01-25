@@ -1,12 +1,15 @@
+/* Integrazione con Bootstrap 5 + Custom Style */
+
+/* Variabili di colore */
 :root {
-  --color-bg: #F5F5F5;    /* Sfondo principale */
-  --color-gray: #8C8C8C;  /* Testi secondari */
-  --color-primary: #4A90E2;
-  --color-dark: #1B2A41;
-  --color-accent: #D4AF37;
+  --color-bg: #F9F9F9;       /* Sfondo principale più chiaro */
+  --color-primary: #4A90E2;  /* Colore primario (Blu) */
+  --color-dark: #1B2A41;     /* Colore testi scuri */
+  --color-accent: #EFC94C;   /* Colore accentato (Oro) */
+  --color-gray: #6C757D;     /* Grigio (per bordi, testi secondari) */
 }
 
-/* RESET BASE */
+/* Reset di base */
 * {
   margin: 0;
   padding: 0;
@@ -22,37 +25,25 @@ body {
   flex-direction: column;
 }
 
-/* HEADER */
-.header {
-  display: flex;
-  align-items: center;
-  background-color: var(--color-primary);
-  padding: 0.75rem 2rem;
+/* HEADER / NAVBAR CUSTOM OVERRIDES */
+.navbar {
+  background-color: var(--color-primary) !important;
 }
 
-.logo {
+.navbar-brand img {
   height: 50px;
-  margin-right: 1rem;
+  margin-right: 0.75rem;
 }
 
-.nav {
-  display: flex;
-  gap: 1rem;
-  margin-left: auto;
+.navbar-nav .nav-link {
+  color: #fff !important;
+  font-weight: 600;
+  transition: color 0.2s ease, background-color 0.2s ease;
 }
 
-.nav-link {
-  color: #fff;
-  text-decoration: none;
-  font-weight: bold;
-  padding: 0.5rem;
-  transition: background-color 0.3s ease;
-}
-
-.nav-link:hover,
-.nav-link.active {
-  background-color: var(--color-accent);
-  color: var(--color-dark);
+.navbar-nav .nav-link:hover {
+  background-color: var(--color-accent) !important;
+  color: var(--color-dark) !important;
   border-radius: 4px;
 }
 
@@ -60,83 +51,80 @@ body {
 .content {
   flex: 1;
   padding: 2rem;
-  max-width: 800px;
+  max-width: 900px;
   margin: 0 auto;
 }
 
-h1 {
+h1, h2 {
+  color: var(--color-dark);
   margin-bottom: 1rem;
-  color: var(--color-dark);
 }
 
-h2 {
-  margin-bottom: 0.5rem;
-  color: var(--color-dark);
+p {
+  margin-bottom: 1rem;
 }
 
-/* FORMS & INPUTS */
+/* CARDS ED ANIMAZIONI */
+.card {
+  margin-bottom: 2rem;
+  animation: fadeIn 0.5s ease-in-out;
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(10px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+/* FORM, INPUT E BOTTONI (OVERRIDES DI BOOTSTRAP) */
 label {
-  display: block;
-  margin: 0.5rem 0 0.25rem;
+  margin-top: 1rem;
   font-weight: bold;
-  color: var(--color-dark);
 }
 
-input[type="text"] {
-  width: 100%;
-  padding: 0.5rem;
-  border: 1px solid var(--color-gray);
-  border-radius: 4px;
+input.form-control {
   margin-bottom: 1rem;
 }
 
-pre {
-  background-color: #fff;
-  border: 1px solid var(--color-gray);
-  padding: 1rem;
-  border-radius: 4px;
-  max-height: 200px;
-  overflow-y: auto;
-}
-
-/* BUTTONS */
-.btn {
-  display: inline-block;
-  padding: 0.5rem 1rem;
-  border: none;
-  border-radius: 4px;
-  cursor: pointer;
-  margin: 0.5rem 0;
-}
-
+/* Colori personalizzati dei bottoni */
 .btn-connect {
   background-color: var(--color-accent);
   color: var(--color-dark);
   font-weight: bold;
+  margin-bottom: 1rem;
 }
 
 .btn-primary {
-  background-color: var(--color-primary);
-  color: #fff;
-}
-
-.btn-secondary {
-  background-color: var(--color-dark);
-  color: #fff;
+  background-color: var(--color-primary) !important;
+  border-color: var(--color-primary) !important;
 }
 
 .btn-warning {
-  background-color: #FFCC00;
-  color: #333;
+  background-color: var(--color-accent) !important;
+  border-color: var(--color-accent) !important;
+  color: var(--color-dark) !important;
 }
 
-/* SECTIONS */
-.card {
-  background-color: #fff;
+.btn-secondary {
+  background-color: var(--color-dark) !important;
+  border-color: var(--color-dark) !important;
+}
+
+.btn:hover {
+  opacity: 0.9;
+}
+
+/* VISUALIZZAZIONE LISTE O DETTAGLI */
+#myNft ul {
+  list-style-type: none;
+  padding-left: 0;
+}
+
+#myNft li {
+  margin-bottom: 1rem;
   border: 1px solid var(--color-gray);
-  padding: 1rem;
   border-radius: 4px;
-  margin-bottom: 2rem;
+  background-color: #fff;
+  padding: 1rem;
 }
 
 /* FOOTER */
