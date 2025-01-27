@@ -5,5 +5,6 @@
     <content url="file://$MODULE_DIR$" />
     <orderEntry type="sourceFolder" forTests="false" />
     <orderEntry type="library" name="ethers" level="application" />
+    <orderEntry type="library" name="ipfs-http-client" level="application" />
   </component>
 </module>
