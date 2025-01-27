@@ -88,7 +88,7 @@ L'interfaccia utente è sviluppata con tecnologie moderne:
 
 ### **Prerequisiti**
 - Node.js e npm installati.
-- Metamask configurato su rete locale HardHat..
+- Metamask configurato su rete locale HardHat.
 - Ambiente Hardhat per lavorare con smart contract.
 
 ### **Setup**
@@ -102,7 +102,7 @@ L'interfaccia utente è sviluppata con tecnologie moderne:
    npm install
    ```
 3. Configura la rete blockchain:
-    - Modifica il file `hardhat.config.js` con i dettagli della tua rete Goerli.
+    - Modifica il file `hardhat.config.js` con i dettagli della tua rete.
 4. Deploya i contratti:
    ```bash
    npx hardhat run scripts/deploy.js --network localhost
