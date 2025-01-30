@@ -52,6 +52,10 @@ contract CertificateRegistry {
         emit CertificateIssued(newTokenId, msg.sender, beneficiary, ipfsURI);
     }
 
+    function getUserCertificates(address user) public view returns (uint256[] memory) {
+        return userCertificates[user];
+    }
+
     function revokeCertificate(uint256 tokenId, string memory reason) public onlyAuthorizedIssuer {
         require(!certificates[tokenId].revoked, "Already revoked");
 

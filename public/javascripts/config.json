@@ -1,7 +1,7 @@
 {
-  "certificateRegistryAddress": "0xCf7Ed3AccA5a467e9e704C703E8D87F634fB0Fc9",
-  "certificateNFTAddress": "0x9fE46736679d2D9a65F0992F2272dE9f3c7fa6e0",
-  "accessControlAddress": "0x5FbDB2315678afecb367f032d93F642f64180aa3",
+  "certificateRegistryAddress": "0x8A791620dd6260079BF849Dc5567aDC3F2FdC318",
+  "certificateNFTAddress": "0x2279B7A0a67DB372996a5FaB50D91eAA73d2eBe6",
+  "accessControlAddress": "0x0165878A594ca255338adfa4d48449f69242Eb8F",
   "registryABI": [
     {
       "inputs": [
@@ -39,6 +39,12 @@
           "internalType": "address",
           "name": "beneficiary",
           "type": "address"
+        },
+        {
+          "indexed": false,
+          "internalType": "string",
+          "name": "ipfsURI",
+          "type": "string"
         }
       ],
       "name": "CertificateIssued",
@@ -106,24 +112,9 @@
       "name": "certificates",
       "outputs": [
         {
-          "internalType": "string",
-          "name": "institutionName",
-          "type": "string"
-        },
-        {
-          "internalType": "string",
-          "name": "certificateTitle",
-          "type": "string"
-        },
-        {
-          "internalType": "string",
-          "name": "beneficiaryName",
-          "type": "string"
-        },
-        {
-          "internalType": "string",
-          "name": "dateIssued",
-          "type": "string"
+          "internalType": "bytes32",
+          "name": "hashedSecret",
+          "type": "bytes32"
         },
         {
           "internalType": "string",
@@ -189,24 +180,9 @@
           "type": "address"
         },
         {
-          "internalType": "string",
-          "name": "institutionName",
-          "type": "string"
-        },
-        {
-          "internalType": "string",
-          "name": "certificateTitle",
-          "type": "string"
-        },
-        {
-          "internalType": "string",
-          "name": "beneficiaryName",
-          "type": "string"
-        },
-        {
-          "internalType": "string",
-          "name": "dateIssued",
-          "type": "string"
+          "internalType": "bytes32",
+          "name": "hashedSecret",
+          "type": "bytes32"
         },
         {
           "internalType": "string",
@@ -243,6 +219,11 @@
           "internalType": "uint256",
           "name": "tokenId",
           "type": "uint256"
+        },
+        {
+          "internalType": "bytes32",
+          "name": "providedHash",
+          "type": "bytes32"
         }
       ],
       "name": "verifyCertificate",
@@ -258,33 +239,8 @@
           "type": "bool"
         },
         {
-          "internalType": "address",
-          "name": "issuer",
-          "type": "address"
-        },
-        {
           "internalType": "string",
-          "name": "institutionName",
-          "type": "string"
-        },
-        {
-          "internalType": "string",
-          "name": "title",
-          "type": "string"
-        },
-        {
-          "internalType": "string",
-          "name": "beneficiaryName",
-          "type": "string"
-        },
-        {
-          "internalType": "string",
-          "name": "dateIssued",
-          "type": "string"
-        },
-        {
-          "internalType": "string",
-          "name": "ipfs",
+          "name": "ipfsURI",
           "type": "string"
         }
       ],

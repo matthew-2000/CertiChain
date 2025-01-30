@@ -9,7 +9,6 @@ async function loadContractConfig() {
         const response = await fetch("./javascripts/config.json");
         const config = await response.json();
 
-        // Inizializziamo provider e signer
         const provider = new ethers.BrowserProvider(window.ethereum);
         signer = await provider.getSigner();
 
@@ -38,7 +37,7 @@ async function loadContractConfig() {
 }
 
 /**
- * Connette il wallet utente e memorizza l'indirizzo nel localStorage
+ * Connetti il wallet
  */
 async function connectWallet() {
     await loadContractConfig();
@@ -53,23 +52,14 @@ async function connectWallet() {
 }
 
 /**
- * Emette un certificato utilizzando CertificateRegistry.sol
+ * Emetti un certificato
  */
-async function issueCertificate(
-    beneficiary,
-    institutionName,
-    certificateTitle,
-    beneficiaryName,
-    dateIssued,
-    ipfsURI
-) {
+async function issueCertificate(beneficiary, secret, ipfsURI) {
     try {
+        const hashedSecret = ethers.keccak256(ethers.toUtf8Bytes(secret));
         const tx = await registryContract.issueCertificate(
             beneficiary,
-            institutionName,
-            certificateTitle,
-            beneficiaryName,
-            dateIssued,
+            hashedSecret,
             ipfsURI
         );
         await tx.wait();
@@ -80,43 +70,27 @@ async function issueCertificate(
 }
 
 /**
- * Verifica un certificato ottenendo le informazioni dal contratto Registry.
- * La funzione verifyCertificate(...) NON restituisce la revokeReason,
- * quindi facciamo una chiamata extra a "certificates(tokenId)" per ottenerla.
+ * Verifica un certificato
  */
-async function checkCertificate(tokenId) {
+async function checkCertificate(tokenId, secret) {
     try {
         await loadContractConfig();
-        // Chiamata alla funzione "verifyCertificate(tokenId)"
-        // Restituisce [valid, revoked, issuer, institutionName, title, beneficiaryName, dateIssued, ipfsURI]
-        const certArray = await registryContract.verifyCertificate(tokenId);
+        const hashedSecret = ethers.keccak256(ethers.toUtf8Bytes(secret));
 
-        // Chiamata diretta alla mapping "certificates(tokenId)" per avere revokeReason
+        const certArray = await registryContract.verifyCertificate(tokenId, hashedSecret);
         const certInfo = await registryContract.certificates(tokenId);
 
-        // L'oggetto certInfo, essendo una struct, sarà un array con i campi:
-        // 0: institutionName
-        // 1: certificateTitle
-        // 2: beneficiaryName
-        // 3: dateIssued
-        // 4: ipfsURI
-        // 5: revoked
-        // 6: revokeReason
-        // 7: issuer
-        // Se stai usando Hardhat/Ethers 6, potresti accedere a .institutionName, .revokeReason, ecc.
-        // ma per coerenza, prendiamo .revokeReason
-
-        return {
-            valid: certArray[0],
-            revoked: certArray[1],
-            issuer: certArray[2],
-            institutionName: certArray[3],
-            certificateTitle: certArray[4],
-            beneficiaryName: certArray[5],
-            dateIssued: certArray[6],
-            ipfsURI: certArray[7],
-            revokeReason: certInfo.revokeReason // questo campo in più
-        };
+        if (!certArray.valid) {
+            alert(`Il certificato non è valido.`);
+        } else {
+            return {
+                valid: certArray[0],
+                revoked: certArray[1],
+                ipfsURI: certArray[2],
+                revokeReason: certInfo.revokeReason,
+                issuer: certInfo.issuer
+            };
+        }
     } catch (error) {
         throw new Error("Errore nella verifica del certificato: " + error.message);
     }
@@ -136,7 +110,7 @@ async function revokeCertificate(tokenId, reason) {
 }
 
 /**
- * Recupera tutti i certificati dell'utente tramite il contratto NFT
+ * Recupera tutti i certificati dell'utente tramite il contratto NFT (senza richiedere subito il segreto)
  */
 async function getUserNFTs() {
     const userAddress = localStorage.getItem("userAddress");
@@ -145,16 +119,13 @@ async function getUserNFTs() {
         let nftDetails = [];
 
         for (let tokenId of tokenIds) {
-            const certificate = await checkCertificate(tokenId);
             nftDetails.push({
                 tokenId: tokenId.toString(),
-                institutionName: certificate.institutionName,
-                certificateTitle: certificate.certificateTitle,
-                beneficiaryName: certificate.beneficiaryName,
-                dateIssued: certificate.dateIssued,
-                ipfsURI: certificate.ipfsURI,
-                revoked: certificate.revoked,
-                issuer: certificate.issuer
+                verified: false,  // Indica se è stato verificato con il segreto
+                ipfsURI: null,
+                revoked: null,
+                issuer: null,
+                revokeReason: null
             });
         }
 
@@ -165,14 +136,39 @@ async function getUserNFTs() {
 }
 
 /**
- * Controlla se l'utente ha il ruolo di Issuer
+ * Verifica un certificato solo dopo che l'utente inserisce la parola segreta
  */
-async function isUserIssuer() {
-    const userAddress = localStorage.getItem("userAddress");
+async function verifyCertificateDetails(tokenId) {
+    const userSecret = prompt(`Inserisci la parola segreta per il certificato con Token ID ${tokenId}:`);
+
+    if (!userSecret) {
+        alert(`Verifica annullata.`);
+        return;
+    }
+
     try {
-        const hasRole = await accessControlContract.hasIssuerRole(userAddress);
-        return hasRole;
+        // Recuperiamo il certificato usando il segreto
+        const certificate = await checkCertificate(tokenId, userSecret);
+
+        if (!certificate.valid) {
+            alert(`Il certificato non è valido.`);
+            return;
+        }
+
+        // Creazione del link IPFS
+        let ipfsGateway = "https://ipfs.io/ipfs/";
+        let ipfsHttpURI = certificate.ipfsURI ? certificate.ipfsURI.replace("ipfs://", ipfsGateway) : "N/A";
+
+        // Mostra i dettagli del certificato verificato
+        // Aggiorna il contenuto dei dettagli
+        document.getElementById(`details-${tokenId}`).innerHTML = `
+            <strong>IPFS URI:</strong> <a href="${ipfsHttpURI}" target="_blank">${ipfsHttpURI}</a><br>
+            <strong>Revocato:</strong> ${certificate.revoked ? 'Sì' : 'No'} <br>
+            <strong>Motivo Revoca:</strong> ${certificate.revokeReason || 'N/A'} <br>
+            <strong>Issuer:</strong> ${certificate.issuer}
+        `;
+        document.getElementById(`details-${tokenId}`).style.display = "block";
     } catch (error) {
-        throw new Error("Errore nel controllo dei ruoli: " + error.message);
+        alert(`Errore durante la verifica: ${error.message}`);
     }
 }
