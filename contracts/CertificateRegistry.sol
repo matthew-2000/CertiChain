@@ -6,10 +6,7 @@ import "./CertificateNFT.sol";
 
 contract CertificateRegistry {
     struct CertificateInfo {
-        string institutionName;
-        string certificateTitle;
-        string beneficiaryName;
-        string dateIssued;
+        bytes32 hashedSecret;
         string ipfsURI;
         bool revoked;
         string revokeReason;
@@ -23,7 +20,7 @@ contract CertificateRegistry {
     CertificateNFT public certificateNFT;
     AccessControlManager public accessControl;
 
-    event CertificateIssued(uint256 indexed tokenId, address indexed issuer, address indexed beneficiary);
+    event CertificateIssued(uint256 indexed tokenId, address indexed issuer, address indexed beneficiary, string ipfsURI);
     event CertificateRevoked(uint256 indexed tokenId, address indexed issuer, string reason);
 
     constructor(address _accessControl, address _certificateNFT) {
@@ -36,41 +33,26 @@ contract CertificateRegistry {
         _;
     }
 
-    function issueCertificate(
-        address beneficiary,
-        string memory institutionName,
-        string memory certificateTitle,
-        string memory beneficiaryName,
-        string memory dateIssued,
-        string memory ipfsURI
-    ) public onlyAuthorizedIssuer {
+    function issueCertificate(address beneficiary, bytes32 hashedSecret, string memory ipfsURI) public onlyAuthorizedIssuer {
         currentTokenId++;
         uint256 newTokenId = currentTokenId;
 
+        // Mintiamo l'NFT PRIMA di salvare il certificato
         certificateNFT.mintCertificate(beneficiary, newTokenId, ipfsURI);
+
         certificates[newTokenId] = CertificateInfo({
-            institutionName: institutionName,
-            certificateTitle: certificateTitle,
-            beneficiaryName: beneficiaryName,
-            dateIssued: dateIssued,
+            hashedSecret: hashedSecret,
             ipfsURI: ipfsURI,
             revoked: false,
             revokeReason: "",
             issuer: msg.sender
         });
 
-        // Aggiungi token ID al mapping dell'utente
         userCertificates[beneficiary].push(newTokenId);
-
-        emit CertificateIssued(newTokenId, msg.sender, beneficiary);
-    }
-
-    function getUserCertificates(address user) public view returns (uint256[] memory) {
-        return userCertificates[user];
+        emit CertificateIssued(newTokenId, msg.sender, beneficiary, ipfsURI);
     }
 
     function revokeCertificate(uint256 tokenId, string memory reason) public onlyAuthorizedIssuer {
-        // Controlla che il token esista prima di revocare
         require(!certificates[tokenId].revoked, "Already revoked");
 
         certificates[tokenId].revoked = true;
@@ -79,34 +61,16 @@ contract CertificateRegistry {
         emit CertificateRevoked(tokenId, msg.sender, reason);
     }
 
-    function verifyCertificate(uint256 tokenId)
-    public
-    view
-    returns (
-        bool valid,
-        bool revoked,
-        address issuer,
-        string memory institutionName,
-        string memory title,
-        string memory beneficiaryName,
-        string memory dateIssued,
-        string memory ipfs
-    )
-    {
-        try certificateNFT.ownerOf(tokenId) returns (address nftOwner) {
-            CertificateInfo memory info = certificates[tokenId];
-            return (
-                !info.revoked,
-                info.revoked,
-                info.issuer,
-                info.institutionName,
-                info.certificateTitle,
-                info.beneficiaryName,
-                info.dateIssued,
-                info.ipfsURI
-            );
-        } catch {
-            return (false, false, address(0), "", "", "", "", "");
+    function verifyCertificate(uint256 tokenId, bytes32 providedHash) public view returns (bool valid, bool revoked, string memory ipfsURI) {// Controllo se il certificato esiste
+        if (certificates[tokenId].issuer == address(0)) {
+            return (false, false, "");
         }
+
+        CertificateInfo memory cert = certificates[tokenId];
+
+        if (cert.hashedSecret == providedHash) {
+            return (true, cert.revoked, cert.ipfsURI);
+        }
+        return (false, false, "");
     }
 }
