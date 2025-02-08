@@ -20,7 +20,7 @@ async function initIPFS() {
 }
 
 document.addEventListener('DOMContentLoaded', () => {
-    initIPFS().then(r => {});
+    initIPFS().then(() => {});
 });
 
 /**
@@ -134,16 +134,15 @@ async function handleGetNFTs() {
         const nftDetails = await getUserNFTs();
 
         if (Array.isArray(nftDetails) && nftDetails.length > 0) {
-            let output = '<ul>';
+            let output = '<ul class="list-unstyled">';
             nftDetails.forEach((nft) => {
                 output += `
-                <li id="cert-${nft.tokenId}">
+                <li id="cert-${nft.tokenId}" class="mb-3">
                     <strong>Token ID:</strong> ${nft.tokenId} <br>
                     <button onclick="verifyCertificateDetails(${nft.tokenId})" class="btn btn-primary mt-2">Verifica</button>
                     <div id="details-${nft.tokenId}" class="mt-2" style="display: none;"></div>
-                </li><br>`;
+                </li>`;
             });
-
             output += '</ul>';
             displayResult('myNft', output);
         } else {
@@ -153,4 +152,3 @@ async function handleGetNFTs() {
         displayResult('myNft', error.message, true);
     }
 }
-

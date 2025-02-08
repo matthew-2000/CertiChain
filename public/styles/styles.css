@@ -1,136 +1,156 @@
-/* Integrazione con Bootstrap 5 + Custom Style */
+/* styles.css */
 
-/* Variabili di colore */
+/* Variabili */
 :root {
-  --color-bg: #F9F9F9;       /* Sfondo principale più chiaro */
-  --color-primary: #4A90E2;  /* Colore primario (Blu) */
-  --color-dark: #1B2A41;     /* Colore testi scuri */
-  --color-accent: #EFC94C;   /* Colore accentato (Oro) */
-  --color-gray: #6C757D;     /* Grigio (per bordi, testi secondari) */
+  --primary-color: #007aff; /* Blu in stile Apple */
+  --secondary-color: #5856d6;
+  --background-color: #f5f5f7;
+  --text-color: #1c1c1e;
+  --white: #ffffff;
+  --border-radius: 10px;
 }
 
-/* Reset di base */
+/* Stili globali */
 * {
-  margin: 0;
-  padding: 0;
   box-sizing: border-box;
-  font-family: Arial, sans-serif;
+  transition: all 0.3s ease;
 }
 
 body {
-  background-color: var(--color-bg);
-  color: var(--color-dark);
-  min-height: 100vh;
-  display: flex;
-  flex-direction: column;
+  font-family: 'Roboto', sans-serif;
+  background-color: var(--background-color);
+  color: var(--text-color);
+  margin: 0;
+  padding: 0;
 }
 
-/* HEADER / NAVBAR CUSTOM OVERRIDES */
-.navbar {
-  background-color: var(--color-primary) !important;
+img.logo {
+  height: 40px;
 }
 
-.navbar-brand img {
-  height: 50px;
-  margin-right: 0.75rem;
+/* Navbar personalizzata */
+.custom-navbar {
+  background: rgba(255, 255, 255, 0.8);
+  backdrop-filter: blur(10px);
+  box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+  padding: 0.5rem 1rem;
 }
 
-.navbar-nav .nav-link {
-  color: #fff !important;
-  font-weight: 600;
-  transition: color 0.2s ease, background-color 0.2s ease;
+.custom-navbar .nav-link {
+  color: var(--text-color);
+  font-weight: 500;
+  margin: 0 0.5rem;
 }
 
-.navbar-nav .nav-link:hover {
-  background-color: var(--color-accent) !important;
-  color: var(--color-dark) !important;
-  border-radius: 4px;
+.custom-navbar .nav-link:hover,
+.custom-navbar .nav-link.active {
+  color: var(--primary-color);
 }
 
-/* MAIN CONTENT */
+/* Contenuto principale */
 .content {
-  flex: 1;
-  padding: 2rem;
-  max-width: 900px;
-  margin: 0 auto;
+  padding: 2rem 0;
 }
 
-h1, h2 {
-  color: var(--color-dark);
-  margin-bottom: 1rem;
-}
-
-p {
-  margin-bottom: 1rem;
-}
-
-/* CARDS ED ANIMAZIONI */
+/* Card */
 .card {
-  margin-bottom: 2rem;
-  animation: fadeIn 0.5s ease-in-out;
+  background-color: var(--white);
+  border: none;
+  border-radius: var(--border-radius);
 }
 
-@keyframes fadeIn {
-  from { opacity: 0; transform: translateY(10px); }
-  to { opacity: 1; transform: translateY(0); }
+.card:hover {
+  box-shadow: 0 4px 12px rgba(0,0,0,0.15);
 }
 
-/* FORM, INPUT E BOTTONI (OVERRIDES DI BOOTSTRAP) */
-label {
-  margin-top: 1rem;
-  font-weight: bold;
+/* Pulsanti */
+.btn {
+  border-radius: var(--border-radius);
+  font-weight: 500;
 }
 
-input.form-control {
-  margin-bottom: 1rem;
-}
-
-/* Colori personalizzati dei bottoni */
 .btn-connect {
-  background-color: var(--color-accent);
-  color: var(--color-dark);
-  font-weight: bold;
-  margin-bottom: 1rem;
+  background-color: var(--primary-color);
+  color: var(--white);
+  border: none;
+}
+
+.btn-connect:hover {
+  background-color: #006fe6;
 }
 
 .btn-primary {
-  background-color: var(--color-primary) !important;
-  border-color: var(--color-primary) !important;
+  background-color: var(--primary-color);
+  border: none;
 }
 
-.btn-warning {
-  background-color: var(--color-accent) !important;
-  border-color: var(--color-accent) !important;
-  color: var(--color-dark) !important;
+.btn-primary:hover {
+  background-color: #006ae6;
 }
 
 .btn-secondary {
-  background-color: var(--color-dark) !important;
-  border-color: var(--color-dark) !important;
+  background-color: var(--secondary-color);
+  border: none;
 }
 
-.btn:hover {
-  opacity: 0.9;
+.btn-secondary:hover {
+  background-color: #4a3bb1;
 }
 
-/* VISUALIZZAZIONE LISTE O DETTAGLI */
-#myNft ul {
-  list-style-type: none;
-  padding-left: 0;
+.btn-warning {
+  background-color: #ffcc00;
+  border: none;
+  color: var(--text-color);
 }
 
-#myNft li {
-  margin-bottom: 1rem;
-  border: 1px solid var(--color-gray);
-  border-radius: 4px;
-  background-color: #fff;
-  padding: 1rem;
+.btn-warning:hover {
+  background-color: #e6b800;
 }
 
-/* FOOTER */
+/* Footer */
 .footer {
-  background-color: var(--color-dark);
-  color: #fff;
-  text-align: center;
   padding: 1rem 0;
+  background-color: var(--white);
+  box-shadow: 0 -2px 4px rgba(0,0,0,0.05);
+  position: relative;
+  bottom: 0;
+  width: 100%;
+}
+
+/* Elementi form */
+input.form-control {
+  border-radius: var(--border-radius);
+  border: 1px solid #ccc;
+}
+
+input.form-control:focus {
+  border-color: var(--primary-color);
+  box-shadow: 0 0 5px rgba(0,122,255,0.5);
+}
+
+/* Animazioni (durata personalizzata per animate.css) */
+.animate__animated {
+  animation-duration: 0.6s;
+}
+
+/* Utility */
+.text-center {
+  text-align: center;
+}
+
+.mt-3 {
+  margin-top: 1rem !important;
+}
+
+.mt-4 {
+  margin-top: 1.5rem !important;
+}
+
+.py-5 {
+  padding-top: 3rem !important;
+  padding-bottom: 3rem !important;
+}
+
+.shadow-sm {
+  box-shadow: 0 2px 4px rgba(0,0,0,0.1) !important;
 }
